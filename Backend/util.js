@@ -22,8 +22,8 @@ const generateToken = (user) =>{
         email: user.email,
         isAdmin: user.isAdmin,
         
-    },process.env.JWT_SECRET,  {
-        expiresIn: '48h'
+    },process.env.JWT_SECRET || 'somethingsecret' , {
+        expiresIn: '30d'
     })
 }
 

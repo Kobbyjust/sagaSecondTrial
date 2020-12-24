@@ -1,10 +1,11 @@
 import express from 'express';
-import User from '../models/userModel.js';
+
 import { generateToken, getToken, isAuth } from '../util';
 import shop_Books from '../shop_Books';
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import dotenv from 'dotenv';
+import User from '../models/userModel';
 
 const jwt = require('jsonwebtoken');
 const bcryptjs = require("bcryptjs");
@@ -72,7 +73,7 @@ const user = new User({
     const newUser = await user.save();
     res.send(newUser);
     } catch (error) {
-        res.send({msg: error.message})
+        res.send({msg: error.message}) 
     }
    
 });*/
@@ -84,7 +85,7 @@ userRouter.get("/seed", expressAsyncHandler(async (req, res) =>
     res.send({createdUsers});
 }));
 
-/*
+
 userRouter.post('/signin', expressAsyncHandler(async(req, res) => { 
     const user = await User.findOne({
         email: req.body.email }); 
@@ -116,12 +117,13 @@ userRouter.get('/signin', async(req, res) =>{
     if(user){
        req.send({
         email: user.email,
-        password: user.password
+        password: user.password,
+        name: user.name
        })
     }
-})*/
+})
 
-/*userRouter.post('/register', async(req, res) => { 
+userRouter.post('/register', async(req, res) => { 
     const user = new User({
         name: req.body.name,
         email: req.body.email,
@@ -137,8 +139,8 @@ userRouter.get('/signin', async(req, res) =>{
             token: generateToken(createdUser)
         })
     
-    })  */ 
-
+    })  
+/*
  userRouter.get('/', auth, async (req, res) =>{
      try {
          const user = await User.findById(req.user.id).select('-password')
@@ -152,7 +154,8 @@ userRouter.get('/signin', async(req, res) =>{
 
 userRouter.post('/register', [
     check('email', 'Email is required').isEmail(), 
-    check('password','Password is required').not().isEmpty()
+    check('password','Password is required').not().isEmpty(),
+    
 ],async(req,res)=>{
    try {
       let {email, password} = req.body;
@@ -170,7 +173,8 @@ userRouter.post('/register', [
        password = await bcryptjs.hash(password,salt);
        user = new User({
            email,
-           password 
+           password,
+         
        })
        await user.save();
 
@@ -200,7 +204,7 @@ userRouter.post('/register', [
        return res.status(500).json({msg: "server1 Error..."});
    }
 })
-
+*/
 userRouter.post('/login',[
     check('email', 'Email is required').isEmail(), 
     check('password','Password is required').not().isEmpty()
